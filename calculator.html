@@ -7,7 +7,7 @@
 <div class="br3 ba b--black-10 ma2 pa3">
             <h3>Income tax liability calculator</h3>
             <p class="i fw1">Updated 11/2/17</p>
-            <p>This calculator is a simplification based on what's currently known about the Republican and Trump tax plans. It's designed for people earning income through a job who fill out a W2, not for business owners or self-employed people.</p>
+            <p>This calculator is designed for people who take the standard deduction on their taxes based on income from a job or W2. We've factored in the earned income tax credit and child tax credit, but no other credits or deductions.</p>
             <form>
               <div class="form-group w-100" id="status">
                 <p>How did you file your return last year?</p>
@@ -19,7 +19,7 @@
               <div class="form-group dn" id="income">
                 <label for="totalIncome">Income</label>
                 <input type="number" class="form-control" id="totalIncome" aria-describedby="incomeHelp" placeholder="">
-                <small id="incomeHelp" class="form-text text-muted">Enter your total income, either for yourself or you and your spouse. If you contributed to a 401(k) or other tax-free retirement account, include your income after those deductions.</small>
+                <small id="incomeHelp" class="form-text text-muted">Enter your total annual income, either for yourself or you and your spouse. If you contributed to a 401(k) or other tax-free retirement account, include your income after those deductions.</small>
                 <small>Don't worry, we don't store any of this data!</small>
                 <br>
                 <a class="falselink mt2 2f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setIncome()>Next</a>
@@ -60,26 +60,28 @@
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setNonChild()>Next</a>
               </div>
               <!-- loan deduction -->
-              <div class="form-group dn" id="loanDeduction"> If you deducted student loan interest from your taxes last year, enter the amount you deducted.
+              <div class="form-group dn" id="loanDeduction"> If you deducted student loan interest from your taxes last year, enter the amount you deducted (up to $2,500).
                 <p>Enter 0 for none.</p>
                 <input type="number" class="form-control" id="totalLoan">
                 <br>
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setLoan()>Next</a>
               </div>
               <!-- tution deduction -->
-              <div class="form-group dn" id="tuitionDeduction"> If you deducted eligible tuition expenses from you taxes last year, enter the amount you deducted.
+              <div class="form-group dn" id="tuitionDeduction"> If you deducted eligible tuition expenses from you taxes last year, enter the amount you deducted (up to $2,500).
                 <p>Enter 0 for none.</p>
                 <input type="number" class="form-control" id="totalTuition">
                 <br>
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setTuition()>Next</a>
               </div>
               <!-- standard vs itemized -->
+              <!-- eliminate this question - everyone gets std deduction -->
               <div class="form-group dn" id="deductions"> 
                 <p>Did you take the IRS standard deduction on your 2016 taxes, or did you itemize your deductions (such as charitable contributions and mortgage interest payments)?</p>
                 <p>Most taxpayers take the standard deduction, select that if you're not sure.</p>
                 <a class="falselink f6 link grow br3 ba ph3 pv2 mb2 dib black w-100 w-50-ns" href="#" onclick=javascript:setDeductions('standard')>Standard</a>
                 <a class="falselink f6 link grow br3 ba ph3 pv2 mb2 dib black w-100 w-50-ns" href="#" onclick=javascript:setDeductions('itemized')>Itemized</a>
               </div>
+              <!--eliminate itimized deduction-->
               <!-- if itemized deductions -->
               <div class="form-group dn" id="itemizedDeductions"> What was the total amount of all the itemized deductions you took on your 2016 taxes? Your best guess is fine.
                 <input type="number" class="form-control" id="totalDeductions">
@@ -87,6 +89,7 @@
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setItemized()>Next</a>
               </div>
               <!-- check for non charitable deduction -->
+              <!--eliminate-->
               <div class="form-group dn" id="nonCharity"> 
                 <p>Did you take any deductions that were not for charitable giving or mortgage interest payments? </p>
                 <p>Some examples would be deductions for state and local taxes or qualifying medical expenses. If so, enter the amount of those deductions only here</p>
@@ -99,15 +102,11 @@
             <div class="w-100 pa2 dn" id="results">
                 <div class="w-100 fl pa2">
                   <div id="caveats">
-                    <p>This calculator factors in tuition and student loan interest deductions, as well as two of the most common tax credits taken by low income families: the Earned Income Tax Credit and the Child Tax Credit. Any other credits you’ve taken on your taxes will affect the accuracy of these numbers.</p>
+                    <p>This calculator factors in tuition and student loan interest deductions, as well as two of the most common tax credits taken by low income families: the Earned Income Tax Credit and the Child Tax Credit. We've added the new family tax credit included in the tax bill. Any other credits you’ve taken on your taxes will affect the accuracy of these numbers.</p>
 
-                    <p>For the sake of simplicity, we’ve assumed all income you entered at the top is earned income, rather than income from sources like social security. If your income is from a source other than a job, it might affect your eligibility for credits.</p>
+                    <p>The individual tax portions of the bill, including higher standard deductions and lower tax rates, are set to expire in 2025. After that, your taxes should look something like they do now.</p>
 
-                    <p>If you itemized deductions last year but would be better off taking the standard deduction under the Republican plan, we automatically gave you the standard deduction.</p>
-
-                    <p>The Republican bill only allows deductions on mortgage interest for the first $500,000 mortgage debt, rather than the $1 million cutoff under current law. Because $500,000 is still well above the median Spokane County home price, we did not build the new cap into the calculator.</p>
-
-                    <p>We plan to update this calculator as tax reform advances forward.</p>
+                    <p>For the sake of simplicity, we’ve assumed all income you entered at the top is earned income, rather than income from sources like social security. If your income is from a source other than a job, it might affect your eligibility for these credits.</p>
 
                   </div>
                 </div>
@@ -916,18 +915,18 @@
         var processTrumpCTC = function(){
             if (CTCvar != undefined) {
                 // kidCred = CTCvar * 1500
-                kidCred = CTCvar * 1600
+                kidCred = CTCvar * 1400
                 if (filing_status == 'single' || filing_status == 'hoh'){
-                    if (total_income > 115000){
-                        CTC = kidCred - ((total_income - 115000) * 0.05)
+                    if (total_income > 200000){
+                        CTC = kidCred - ((total_income - 200000) * 0.05)
                         CTC = CTC < 0 ? 0 : CTC;
                     } else {
                         CTC = kidCred
                     }
                     
                 } else {
-                    if (total_income > 230000){
-                        CTC = kidCred - ((total_income - 230000) * 0.05)
+                    if (total_income > 400000){
+                        CTC = kidCred - ((total_income - 400000) * 0.05)
                         CTC = CTC < 0 ? 0 : CTC;
                     } else {
                         CTC = kidCred
