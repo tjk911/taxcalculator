@@ -6,7 +6,7 @@
 <aside class="mv5">        
 <div class="br3 ba b--black-10 ma2 pa3">
             <h3>Income tax liability calculator</h3>
-            <p class="i fw1">Updated 11/2/17</p>
+            <p class="i fw1">Updated 12/19/17</p>
             <p>This calculator is designed for people who take the standard deduction on their taxes based on income from a job or W2. We've factored in the earned income tax credit and child tax credit, but no other credits or deductions.</p>
             <form>
               <div class="form-group w-100" id="status">
@@ -748,18 +748,17 @@
                 trumpCTC = parseInt(processTrumpCTC())
                 currentCTC = parseInt(processCurrentCTC())
 
-
-                console.log('this is the trump tax pre parent')
-                console.log(trump_tax)
-                if (filing_status == 'hoh') {
-                    trump_tax = trump_tax - 300    
-                    trump_tax = trump_tax < 0 ? 0 : trump_tax;
-                } else if (filing_status == 'joint') {
-                    trump_tax = trump_tax - 600
-                    trump_tax = trump_tax < 0 ? 0 : trump_tax;
-                }
-                console.log('this is the trump tax post parent')
-                console.log(trump_tax)
+                // console.log('this is the trump tax pre parent')
+                // console.log(trump_tax)
+                // if (filing_status == 'hoh') {
+                //     trump_tax = trump_tax - 300    
+                //     trump_tax = trump_tax < 0 ? 0 : trump_tax;
+                // } else if (filing_status == 'joint') {
+                //     trump_tax = trump_tax - 600
+                //     trump_tax = trump_tax < 0 ? 0 : trump_tax;
+                // }
+                // console.log('this is the trump tax post parent')
+                // console.log(trump_tax)
 
                 console.log('this is the trump CTC')
                 console.log(trumpCTC)
@@ -769,13 +768,14 @@
                     if (total_income > 3000) {
                         trump_tax_status = 'refund'
                         trump_tax = Math.abs(trump_tax)
-                        if (trump_tax > 2000) {
-                            trump_tax = 2000
+                        if (trump_tax > 1400) {
+                            trump_tax = 1400
                         }
                     } else {
                       trump_tax = 0  
                     }
                 }
+
                 tax = tax - currentCTC
 
                 if (tax <= 0) {
@@ -792,8 +792,8 @@
             }
 
             if (dependents != 0 && nonChild != 0) {
-                // trump_dep_cred = (dependents - nonChild) * 500
-                trump_dep_cred = (dependents - nonChild) * 300
+                trump_dep_cred = (dependents - nonChild) * 500
+                // trump_dep_cred = (dependents - nonChild) * 300
                 console.log('trump dep cred is firing')
                 console.log(trump_dep_cred)
                 trump_tax = trump_tax - trump_dep_cred
@@ -925,7 +925,7 @@
         var processTrumpCTC = function(){
             if (CTCvar != undefined) {
                 // kidCred = CTCvar * 1500
-                kidCred = CTCvar * 1400
+                kidCred = CTCvar * 2000
                 if (filing_status == 'single' || filing_status == 'hoh'){
                     if (total_income > 200000){
                         CTC = kidCred - ((total_income - 200000) * 0.05)
