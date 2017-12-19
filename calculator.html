@@ -74,29 +74,29 @@
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setTuition()>Next</a>
               </div>
               <!-- standard vs itemized -->
-              <!-- eliminate this question - everyone gets std deduction -->
+              <!-- eliminate this question - everyone gets std deduction 
               <div class="form-group dn" id="deductions"> 
                 <p>Did you take the IRS standard deduction on your 2016 taxes, or did you itemize your deductions (such as charitable contributions and mortgage interest payments)?</p>
                 <p>Most taxpayers take the standard deduction, select that if you're not sure.</p>
                 <a class="falselink f6 link grow br3 ba ph3 pv2 mb2 dib black w-100 w-50-ns" href="#" onclick=javascript:setDeductions('standard')>Standard</a>
                 <a class="falselink f6 link grow br3 ba ph3 pv2 mb2 dib black w-100 w-50-ns" href="#" onclick=javascript:setDeductions('itemized')>Itemized</a>
-              </div>
+              </div> -->
               <!--eliminate itimized deduction-->
-              <!-- if itemized deductions -->
+              <!-- if itemized deductions 
               <div class="form-group dn" id="itemizedDeductions"> What was the total amount of all the itemized deductions you took on your 2016 taxes? Your best guess is fine.
                 <input type="number" class="form-control" id="totalDeductions">
                 <br>
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setItemized()>Next</a>
-              </div>
+              </div> -->
               <!-- check for non charitable deduction -->
-              <!--eliminate-->
+              <!--eliminate
               <div class="form-group dn" id="nonCharity"> 
                 <p>Did you take any deductions that were not for charitable giving or mortgage interest payments? </p>
                 <p>Some examples would be deductions for state and local taxes or qualifying medical expenses. If so, enter the amount of those deductions only here</p>
                 <input type="number" class="form-control" id="totalNonCharity">
                 <br>
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setNonCharity()>Next</a>
-              </div>
+              </div>-->
               <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib red" href="#" onclick=javascript:resetCalculator()>Reset</a>
             </form>
             <div class="w-100 pa2 dn" id="results">
@@ -191,8 +191,12 @@
         var setTuition = function(){
             tuition = parseInt($('#totalTuition').val())
             console.log(tuition)
+            deduction_type = 'standard'
             $('#tuitionDeduction').hide()
-            $('#deductions').show()
+            $('#results').css('display', 'inline-block')
+            calculateTaxable()
+            calculateTrumpTaxable()
+            // $('#deductions').show()
         }        
 
         var setChildren = function(){
@@ -216,18 +220,18 @@
             $('#loanDeduction').show()
         }
 
-        var setDeductions = function(value){
-            deduction_type = value
-            console.log(deduction_type)
-            $('#deductions').hide()
-            if (deduction_type == 'itemized'){
-                $('#itemizedDeductions').show()
-            } else {
-                $('#results').css('display', 'inline-block')
-                calculateTaxable()
-                calculateTrumpTaxable()
-            }
-        }
+        // var setDeductions = function(value){
+        //     deduction_type = value
+        //     console.log(deduction_type)
+        //     $('#deductions').hide()
+        //     if (deduction_type == 'itemized'){
+        //         $('#itemizedDeductions').show()
+        //     } else {
+        //         $('#results').css('display', 'inline-block')
+        //         calculateTaxable()
+        //         calculateTrumpTaxable()
+        //     }
+        // }
 
         var setItemized = function(){
             total_deduction = parseInt($('#totalDeductions').val())
@@ -517,101 +521,107 @@
 
         var calculateTrumpTaxes = function(value){
             if (filing_status == 'single'){
-                if (value - 45000 >= 0){
-                    trump_tax = 5400
-                    if (value - 200000 >= 0){
-                        trump_tax = 44150
-                        if (value - 500000 >= 0){
-                            trump_tax = 149150
-                            if (value >= 500001){
-                                trump_tax = 149150 + ((value - 500000)*0.396)
+                if (value - 9525 >= 0){
+                    trump_tax = 952.5
+                    if (value - 38700 >= 0){
+                        trump_tax = 4453.5
+                        if (value - 82500 >= 0){
+                            trump_tax = 14089.5
+                            if (value - 157500 >= 0){
+                                trump_tax = 32089.5
+                                if (value - 200000 >= 0){
+                                    trump_tax = 45689.5
+                                    if (value - 500000 >= 0){
+                                        trump_tax = 150689.5
+                                        if (value >= 500001){
+                                            trump_tax = 150689.5 +((value - 500000)*0.37)
+                                        }
+                                    } else {
+                                        trump_tax = 45689.5 + ((value - 200000)*0.35)
+                                    }
+                                } else {
+                                    trump_tax = 32089.5 + ((value - 157500)*0.32)
+                                }
+                            } else {
+                                trump_tax = 14089.5 + ((value - 82500)*0.24)
                             }
                         } else {
-                            trump_tax = 44150 + ((value - 200000)*0.35)
+                            trump_tax = 4453.5 + ((value - 38700)*0.22)
                         }
                     } else {
-                        trump_tax = 5400 + ((value - 45000)*0.25)
+                        trump_tax = 952.5 + ((value - 9525)*0.12)
                     }
                 } else {
-                    trump_tax = value*0.12
+                    trump_tax = value*0.1
                 }
-                // if (value - 37950 >= 0){
-                //     trump_tax = 4554
-                //     if (value - 190650 >= 0){
-                //         trump_tax = 42729
-                //         if (value >= 190651){
-                //             trump_tax = 42729 + ((value - 190650)*0.35)
-                //         }
-                //     } else {
-                //         trump_tax = 4554 + ((value - 37950)*0.25)
-                //     }
-                // } else {
-                //     trump_tax = value*0.12
-                // }
             } else if (filing_status == 'joint'){
-                if (value - 90000 >= 0){
-                    trump_tax = 10800
-                    if (value - 260000 >= 0){
-                        trump_tax = 53300
-                        if (value - 1000000 >= 0){
-                            trump_tax = 312300
-                            if (value >= 1000001){
-                                trump_tax = 312300 + ((value - 1000000)*0.396)
+                if (value - 19050 >= 0){
+                    trump_tax = 1905
+                    if (value - 51800 >= 0){
+                        trump_tax = 8907
+                        if (value - 82500 >= 0){
+                            trump_tax = 28179
+                            if (value - 157500 >= 0){
+                                trump_tax = 64179
+                                if (value - 200000 >= 0){
+                                    trump_tax = 91379
+                                    if (value - 500000 >= 0){
+                                        trump_tax = 161379
+                                        if (value >= 600001){
+                                            trump_tax = 161379 +((value - 600000)*0.37)
+                                        }
+                                    } else {
+                                        trump_tax = 91379 + ((value - 400000)*0.35)
+                                    }
+                                } else {
+                                    trump_tax = 64179 + ((value - 315000)*0.32)
+                                }
+                            } else {
+                                trump_tax = 28179 + ((value - 165000)*0.24)
                             }
                         } else {
-                            trump_tax = 53300 + ((value - 260000)*0.35)
+                            trump_tax = 8907 + ((value - 77400)*0.22)
                         }
                     } else {
-                        trump_tax = 10800 + ((value - 90000)*0.25)
+                        trump_tax = 1905 + ((value - 19050)*0.12)
                     }
                 } else {
-                    trump_tax = value*0.12
+                    trump_tax = value*0.1
                 }
-                // if (value - 75300 >= 0){
-                //     trump_tax = 9036
-                //     if (value - 231450 >= 0){
-                //         trump_tax = 48073.5
-                //         if (value >= 231451){
-                //             trump_tax = 42729 + ((value - 231450)*0.35)
-                //         }
-                //     } else {
-                //         trump_tax = 9036 + ((value - 75300)*0.25)
-                //     }
-                // } else {
-                //     trump_tax = value*0.12
-                // }
-            } else {
-                if (value - 67500 >= 0){
-                    trump_tax = 8100
-                    if (value - 230000 >= 0){
-                        trump_tax = 48725
-                        if (value - 750000 >= 0){
-                            trump_tax = 230725
-                            if (value >= 750001){
-                                trump_tax = 230725 + ((value - 750000)*0.396)
+            } else if (filing_status == 'hoh'){
+                if (value - 13600 >= 0){
+                    trump_tax = 1360
+                    if (value - 51800 >= 0){
+                        trump_tax = 5944
+                        if (value - 82500 >= 0){
+                            trump_tax = 12698
+                            if (value - 157500 >= 0){
+                                trump_tax = 30698
+                                if (value - 200000 >= 0){
+                                    trump_tax = 44298
+                                    if (value - 500000 >= 0){
+                                        trump_tax = 149298
+                                        if (value >= 500001){
+                                            trump_tax = 149298 +((value - 500000)*0.37)
+                                        }
+                                    } else {
+                                        trump_tax = 44298 + ((value - 200000)*0.35)
+                                    }
+                                } else {
+                                    trump_tax = 30698 + ((value - 157500)*0.32)
+                                }
+                            } else {
+                                trump_tax = 12698 + ((value - 82500)*0.24)
                             }
                         } else {
-                            trump_tax = 48725 + ((value - 230000)*0.35)
+                            trump_tax = 5944 + ((value - 51800)*0.22)
                         }
                     } else {
-                        trump_tax = 8100 + ((value - 67500)*0.25)
+                        trump_tax = 1360 + ((value - 13600)*0.12)
                     }
                 } else {
-                    trump_tax = value*0.12
+                    trump_tax = value*0.1
                 }
-                // if (value - 50400 >= 0){
-                //     trump_tax = 6048
-                //     if (value - 210800 >= 0){
-                //         trump_tax = 46148
-                //         if (value >= 210801){
-                //             trump_tax = 40100 + ((value - 210800)*0.35)
-                //         }
-                //     } else {
-                //         trump_tax = 6048 + ((value - 50400)*0.25)
-                //     }
-                // } else {
-                //     trump_tax = value*0.12
-                // }
             }
             console.log('this is Trump trump_tax')
             console.log(trump_tax)
