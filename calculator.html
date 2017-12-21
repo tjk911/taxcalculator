@@ -6,7 +6,7 @@
 <aside class="mv5">        
 <div class="br3 ba b--black-10 ma2 pa3">
             <h3>Income tax liability calculator</h3>
-            <p class="i fw1">Updated 12/19/17</p>
+            <p class="i fw1">Updated 12/20/17</p>
             <p>This calculator is designed for people who take the standard deduction on their taxes based on income from a job or W2. We've factored in the earned income tax credit and child tax credit, but no other credits or deductions.</p>
             <form>
               <div class="form-group w-100" id="status">
@@ -60,19 +60,19 @@
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setNonChild()>Next</a>
               </div>
               <!-- loan deduction -->
-              <div class="form-group dn" id="loanDeduction"> If you deducted student loan interest from your taxes last year, enter the amount you deducted (up to $2,500).
+              <!-- <div class="form-group dn" id="loanDeduction"> If you deducted student loan interest from your taxes last year, enter the amount you deducted (up to $2,500).
                 <p>Enter 0 for none.</p>
                 <input type="number" class="form-control" id="totalLoan">
                 <br>
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setLoan()>Next</a>
-              </div>
+              </div> -->
               <!-- tution deduction -->
-              <div class="form-group dn" id="tuitionDeduction"> If you deducted eligible tuition expenses from you taxes last year, enter the amount you deducted (up to $2,500).
+              <!-- <div class="form-group dn" id="tuitionDeduction"> If you deducted eligible tuition expenses from you taxes last year, enter the amount you deducted (up to $2,500).
                 <p>Enter 0 for none.</p>
                 <input type="number" class="form-control" id="totalTuition">
                 <br>
                 <a class="falselink mt2 f6 link grow br3 ba ph3 pv2 mb2 dib black" href="#" onclick=javascript:setTuition()>Next</a>
-              </div>
+              </div> -->
               <!-- standard vs itemized -->
               <!-- eliminate this question - everyone gets std deduction 
               <div class="form-group dn" id="deductions"> 
@@ -175,7 +175,11 @@
             console.log(dependents)
             $('#dependents').hide()
             if (dependents == 0) {
-                $('#loanDeduction').show()
+                // $('#loanDeduction').show()
+                deduction_type = 'standard'
+                $('#results').css('display', 'inline-block')
+                calculateTaxable()
+                calculateTrumpTaxable()
             } else {
                 $('#children').show()    
             }
@@ -191,11 +195,8 @@
         var setTuition = function(){
             tuition = parseInt($('#totalTuition').val())
             console.log(tuition)
-            deduction_type = 'standard'
+            // deduction_type = 'standard'
             $('#tuitionDeduction').hide()
-            $('#results').css('display', 'inline-block')
-            calculateTaxable()
-            calculateTrumpTaxable()
             // $('#deductions').show()
         }        
 
@@ -217,7 +218,11 @@
         var setNonChild = function(){
             nonChild = parseInt($('#totalNonChild').val())
             $('#nonChild').hide()
-            $('#loanDeduction').show()
+            // $('#loanDeduction').show()
+            deduction_type = 'standard'
+            $('#results').css('display', 'inline-block')
+            calculateTaxable()
+            calculateTrumpTaxable()
         }
 
         // var setDeductions = function(value){
@@ -285,7 +290,8 @@
                     trump_taxable_income = item_tax
                 }
             }
-
+            console.log('this is trump taxable income')
+            console.log(trump_taxable_income)
             calculateTrumpTaxes(trump_taxable_income)
         }
 
@@ -294,61 +300,61 @@
             console.log('this is your pre-loan or pre-tuition income')
             console.log(orig_total_income)
 
-            if (filing_status == 'single' || filing_status == 'hoh') {
-                if (loan != undefined) {
-                    if (orig_total_income <= 73000) {
-                        if (loan > 4000) {
-                            orig_total_income = orig_total_income - 4000
-                        } else {
-                            orig_total_income = orig_total_income - loan
-                        }
-                    }
-                }
-            } else {
-                if (loan != undefined) {
-                    if (orig_total_income <= 145000) {
-                        if (loan > 4000) {
-                            orig_total_income = orig_total_income - 4000
-                        } else {
-                            orig_total_income = orig_total_income - loan
-                        }
-                    }
-                }
-            }
+            // if (filing_status == 'single' || filing_status == 'hoh') {
+            //     if (loan != undefined) {
+            //         if (orig_total_income <= 73000) {
+            //             if (loan > 4000) {
+            //                 orig_total_income = orig_total_income - 4000
+            //             } else {
+            //                 orig_total_income = orig_total_income - loan
+            //             }
+            //         }
+            //     }
+            // } else {
+            //     if (loan != undefined) {
+            //         if (orig_total_income <= 145000) {
+            //             if (loan > 4000) {
+            //                 orig_total_income = orig_total_income - 4000
+            //             } else {
+            //                 orig_total_income = orig_total_income - loan
+            //             }
+            //         }
+            //     }
+            // }
 
-            if (filing_status == 'single' || filing_status == 'hoh') {
-                if (tuition != undefined) {
-                    if (orig_total_income <= 65000) {
-                        if (tuition > 4000) {
-                            orig_total_income = orig_total_income - 4000
-                        } else {
-                            orig_total_income = orig_total_income - tuition
-                        }
-                    } else if (orig_total_income > 65000 && orig_total_income <= 80000) {
-                        if (tuition > 2000) {
-                            orig_total_income = orig_total_income - 2000
-                        } else {
-                            orig_total_income = orig_total_income - tuition
-                        }
-                    }
-                }
-            } else {
-                if (tuition != undefined) {
-                    if (orig_total_income <= 130000) {
-                        if (tuition > 4000) {
-                            orig_total_income = orig_total_income - 4000
-                        } else {
-                            orig_total_income = orig_total_income - tuition
-                        }
-                    } else if (orig_total_income > 130000 && orig_total_income <= 160000) {
-                        if (tuition > 2000) {
-                            orig_total_income = orig_total_income - 2000
-                        } else {
-                            orig_total_income = orig_total_income - tuition
-                        }
-                    }
-                }
-            }
+            // if (filing_status == 'single' || filing_status == 'hoh') {
+            //     if (tuition != undefined) {
+            //         if (orig_total_income <= 65000) {
+            //             if (tuition > 4000) {
+            //                 orig_total_income = orig_total_income - 4000
+            //             } else {
+            //                 orig_total_income = orig_total_income - tuition
+            //             }
+            //         } else if (orig_total_income > 65000 && orig_total_income <= 80000) {
+            //             if (tuition > 2000) {
+            //                 orig_total_income = orig_total_income - 2000
+            //             } else {
+            //                 orig_total_income = orig_total_income - tuition
+            //             }
+            //         }
+            //     }
+            // } else {
+            //     if (tuition != undefined) {
+            //         if (orig_total_income <= 130000) {
+            //             if (tuition > 4000) {
+            //                 orig_total_income = orig_total_income - 4000
+            //             } else {
+            //                 orig_total_income = orig_total_income - tuition
+            //             }
+            //         } else if (orig_total_income > 130000 && orig_total_income <= 160000) {
+            //             if (tuition > 2000) {
+            //                 orig_total_income = orig_total_income - 2000
+            //             } else {
+            //                 orig_total_income = orig_total_income - tuition
+            //             }
+            //         }
+            //     }
+            // }
 
 
             console.log('this is your post-loan or post-tuition income')
@@ -361,6 +367,7 @@
                         taxable_income = orig_total_income - 6350
                     } else {
                         taxable_income = orig_total_income - 10400
+                        
                     }
                 } else if (filing_status == 'single' && claimed_status == 'True'){
                     taxable_income = orig_total_income - 6350
@@ -368,23 +375,29 @@
                     if (dependents == 0){
                         if (orig_total_income >= 433800){
                             taxable_income = orig_total_income - 12700
+
                         } else {
                             taxable_income = orig_total_income - 20800
+
                         }
                     } else {
                         dependent_deduction = dependents * 4050
                         if (orig_total_income >= 433800){
                             taxable_income = orig_total_income - (dependent_deduction + 12700)
+
                         } else {
                             taxable_income = orig_total_income - (dependent_deduction + 12700 + 8100)
+
                         }
                     }
                 } else if (filing_status == 'hoh'){
                     dependent_deduction = dependents * 4050
                     if (orig_total_income >= 407850){
                         taxable_income = orig_total_income - ( 9350 + dependent_deduction)
+                        
                     } else {
                         taxable_income = orig_total_income - ( 4050 + 9350 + dependent_deduction)
+                        
                     }
                 }
             } else {
@@ -402,6 +415,7 @@
                             }
                         }
                         taxable_income = orig_total_income - (total_deduction)
+                        
                     } else {
                         
                         if (orig_total_income >= 259400){
@@ -415,6 +429,7 @@
                             }
                         }
                         taxable_income = orig_total_income - (total_deduction + 4050)
+                        
                     }
                 } else if (filing_status == 'single' && claimed_status == 'True'){
                     
@@ -443,6 +458,7 @@
                                 }
                             }
                             taxable_income = orig_total_income - (total_deduction)
+
                         } else {
                             if (orig_total_income >= 311300){
                                 agi = orig_total_income*0.03
@@ -455,6 +471,7 @@
                                 }
                             }
                             taxable_income = orig_total_income - (total_deduction + 8100)
+
                         }
                     } else {
                         dependent_deduction = dependents * 4050
@@ -470,6 +487,7 @@
                                 }
                             }
                             taxable_income = orig_total_income - (dependent_deduction + total_deduction)
+
                         } else {
                             if (orig_total_income >= 311300){
                                 agi = orig_total_income*0.03
@@ -482,6 +500,7 @@
                                 }
                             }
                             taxable_income = orig_total_income - (dependent_deduction + total_deduction + 8100)
+
                         }
                     }
                 } else if (filing_status == 'hoh'){
@@ -498,6 +517,7 @@
                             }
                         }
                         taxable_income = orig_total_income - ( total_deduction + dependent_deduction)
+                        
                     } else {
                         if (orig_total_income >= 285350){
                             agi = orig_total_income*0.03
@@ -510,6 +530,7 @@
                             }
                         }
                         taxable_income = orig_total_income - ( 4050 + total_deduction + dependent_deduction)
+                        
                     }
                 }
             }
@@ -557,15 +578,15 @@
             } else if (filing_status == 'joint'){
                 if (value - 19050 >= 0){
                     trump_tax = 1905
-                    if (value - 51800 >= 0){
+                    if (value - 77400 >= 0){
                         trump_tax = 8907
-                        if (value - 82500 >= 0){
+                        if (value - 165000 >= 0){
                             trump_tax = 28179
-                            if (value - 157500 >= 0){
+                            if (value - 315000 >= 0){
                                 trump_tax = 64179
-                                if (value - 200000 >= 0){
+                                if (value - 400000 >= 0){
                                     trump_tax = 91379
-                                    if (value - 500000 >= 0){
+                                    if (value - 600000 >= 0){
                                         trump_tax = 161379
                                         if (value >= 600001){
                                             trump_tax = 161379 +((value - 600000)*0.37)
@@ -768,11 +789,11 @@
                     if (total_income > 3000) {
                         trump_tax_status = 'refund'
                         trump_tax = Math.abs(trump_tax)
-                        if (trump_tax > 1400) {
-                            trump_tax = 1400
+                        if (trump_tax > (1400*CTCvar)) {
+                            trump_tax = 1400*CTCvar
                         }
                     } else {
-                      trump_tax = 0  
+                      trump_tax = 0
                     }
                 }
 
@@ -782,8 +803,8 @@
                     if (total_income > 3000) {
                         tax_status = 'refund'
                         tax = Math.abs(tax)
-                        if (tax > 2000) {
-                            tax = 2000
+                        if (tax > (1000*CTCvar)) {
+                            tax = 1000*CTCvar
                         }
                     } else {
                       tax = 0
